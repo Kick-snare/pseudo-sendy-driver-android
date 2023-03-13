@@ -32,12 +32,11 @@ import java.text.DecimalFormat
 @Composable
 fun OrderItem(
     orderItemInfo: OrderItemInfo = OrderItemInfo(),
-    enable: Boolean = true,
     onClick: () -> Unit = {},
 ) = Surface(
     shape = RoundedCornerShape(16.dp),
     border = BorderStroke(1.dp, DayBorderDefault),
-    contentColor = if (enable) DayGrayscale100 else DayGrayscale400,
+    contentColor = if (orderItemInfo.enable) DayGrayscale100 else DayGrayscale400,
     modifier = Modifier.clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick)
 ) {
     Column(
@@ -49,14 +48,14 @@ fun OrderItem(
         OrderItemTimeInfo(orderItemInfo.loadingTime)
         OrderItemLocationInfo(orderItemInfo.departAddr, orderItemInfo.arriveAddr)
         OrderItemTagList(
-            enable,
+            orderItemInfo.enable,
             orderItemInfo.distance,
             orderItemInfo.vehicleType,
             orderItemInfo.vehicleOption,
             orderItemInfo.timeOrderTag,
             orderItemInfo.OrderTagList
         )
-        OrderItemChargeInfo(enable, orderItemInfo.chargeCost)
+        OrderItemChargeInfo(orderItemInfo.enable, orderItemInfo.chargeCost)
     }
 }
 
