@@ -24,7 +24,7 @@ val NotoSansKR = FontFamily(
 fun getNotoSansTextStyle(
     fontSize : TextUnit,
     weight: FontWeight = FontWeight.Normal,
-    color: Color = DayGrayscale100
+    color: Color = Color.Unspecified
 ) = TextStyle(
     fontFamily = NotoSansKR,
     fontWeight = weight,
