@@ -6,6 +6,7 @@ import com.uzun.pseudosendydriver.presentation._enum.VehicleOption
 import com.uzun.pseudosendydriver.presentation._enum.VehicleType
 
 data class OrderItemInfo(
+    val enable: Boolean = false,
     val loadingTime : SendyTime = SendyTime(),
     val departAddr : String = "",
     val arriveAddr: String = "",

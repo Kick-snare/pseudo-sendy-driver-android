@@ -20,6 +20,7 @@ import com.uzun.pseudosendydriver.presentation.model.SendyTime
 import com.uzun.pseudosendydriver.presentation.ui.common.MainBottomNavigation
 import com.uzun.pseudosendydriver.presentation.ui.common.MainTopBar
 import com.uzun.pseudosendydriver.presentation.ui.common.OrderItem
+import com.uzun.pseudosendydriver.presentation.ui.orderlist.OrderListScreen
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,21 +42,7 @@ fun DriverMainScreen(
             startDestination = BottomRoute.ORDER_LIST.route
         ) {
             composable(route = BottomRoute.ORDER_LIST.route) {
-                val orderItemInfo = OrderItemInfo(
-                    SendyTime(LocalDateTime.now().plusDays(3)),
-                    "부산광역시 부산진구 서면로",
-                    "부산광역시 남구 유엔로",
-                    87,
-                    160_000,
-                    VehicleType.TRUCK_1T,
-                    VehicleOption.CARGO,
-                    TimeOrderTag.DAWN,
-                    listOf(OrderTag.CAUTION, OrderTag.RIDE_WITH, OrderTag.TIME_IMPORTANT)
-                )
-                Column(Modifier.padding(UIConst.SPACE_S)) {
-                    OrderItem(orderItemInfo)
-                    OrderItem(orderItemInfo, false)
-                }
+                OrderListScreen()
             }
             composable(route = BottomRoute.ORDER_SEARCH.route) {
                 Text("ORDER_SEARCH")
@@ -72,5 +59,3 @@ fun DriverMainScreen(
         }
     }
 }
-
-

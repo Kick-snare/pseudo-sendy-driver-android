@@ -24,6 +24,6 @@ data class SendyTime (
     }
 
     fun getDayLeft() : Int {
-        return Period.between(LocalDate.now(), value.toLocalDate()).days
+        return Period.between(value.toLocalDate(), LocalDate.now()).days
     }
 }
