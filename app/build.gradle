@@ -5,11 +5,19 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def naverMapClientId = properties.getProperty('naver_map_api_client_id')
+def naverMapApiKey = properties.getProperty('naver_map_api_key')
+
 android {
     namespace 'com.uzun.pseudosendydriver'
     compileSdk 33
 
     defaultConfig {
+        buildConfigField "String", "NAVER_MAP_API_KEY", naverMapApiKey
+        buildConfigField "String", "NAVER_MAP_CLIENT_ID", naverMapClientId
+
         applicationId "com.uzun.pseudosendydriver"
         minSdk 28
         targetSdk 33
@@ -20,6 +28,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        manifestPlaceholders = [naverMapApiKey:naverMapApiKey, naverMapClientId: naverMapClientId]
     }
 
     buildTypes {
