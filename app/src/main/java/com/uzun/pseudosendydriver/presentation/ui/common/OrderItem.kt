@@ -38,7 +38,7 @@ fun OrderItem(
     shape = RoundedCornerShape(16.dp),
     border = BorderStroke(1.dp, DayBorderDefault),
     contentColor = if (enable) DayGrayscale100 else DayGrayscale400,
-    modifier = Modifier.clickable(onClick = onClick)
+    modifier = Modifier.clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick)
 ) {
     Column(
         modifier = Modifier
@@ -78,10 +78,10 @@ fun OrderItemTimeInfo(loadingTime: SendyTime) = Box {
     }
     val d_day = loadingTime.getDayLeft()
     Text(
-        text = if(d_day == 0) "D-Day" else if(d_day < 0) "D-$d_day" else "D+$d_day",
+        text = if(d_day==0) "D-Day" else if(d_day > 0) "D+$d_day" else "D$d_day",
         modifier = Modifier.align(Alignment.CenterEnd),
         style = PseudoSendyTheme.typography.Normal.copy(color =
-            if(d_day < 0) Color.Green else Color.Red
+            if(d_day > 0) Color.Green else Color.Red
         ),
     )
 }
