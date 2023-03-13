@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.uzun.pseudosendydriver.presentation._enum.BottomRoute
 import com.uzun.pseudosendydriver.presentation.ui.common.MainBottomNavigation
+import com.uzun.pseudosendydriver.presentation.ui.common.MainTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,6 +22,7 @@ fun DriverMainScreen(
 //    vm: OrderFormViewModel = hiltViewModel(),
 ) {
     Scaffold(
+        topBar = { MainTopBar() },
         bottomBar = { MainBottomNavigation(navController) }
     ) {
 
