@@ -3,6 +3,7 @@ package com.uzun.pseudosendydriver.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.uzun.pseudosendydriver.presentation.ui.DriverMainScreen
 import com.uzun.pseudosendydriver.presentation.ui.theme.PseudoSendyTheme
 
 class MainActivity : ComponentActivity() {
@@ -10,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PseudoSendyTheme {
-//                DriverMainScreen()
+                DriverMainScreen()
             }
         }
     }
