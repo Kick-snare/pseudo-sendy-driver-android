@@ -1,4 +1,4 @@
-package com.uzun.pseudosendydriver.ui.theme
+package com.uzun.pseudosendydriver.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.PlatformTextStyle
