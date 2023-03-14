@@ -20,6 +20,7 @@ import com.uzun.pseudosendydriver.presentation._const.UIConst
 import com.uzun.pseudosendydriver.presentation._enum.*
 import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import com.uzun.pseudosendydriver.presentation.model.SendyTime
+import com.uzun.pseudosendydriver.presentation.ui.common.LineSpacer
 import com.uzun.pseudosendydriver.presentation.ui.common.OrderItem
 import com.uzun.pseudosendydriver.presentation.ui.common.OrderUnitDropDownSelector
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
@@ -27,20 +28,19 @@ import java.time.LocalDateTime
 
 @Composable
 fun OrderListScreen(
+    sortBarEnable: Boolean = true,
 ) = Column(
     modifier = Modifier.fillMaxSize()
 ) {
-    val orderUnit = remember{ mutableStateOf(OrderUnit.ByTime) }
+    val orderUnit = remember { mutableStateOf(OrderUnit.ByTime) }
 
-    SortByBar(orderUnit.value) {
-        orderUnit.value = it
-        Log.d("TEST", "order unit $it selected")
-    }
-    Spacer(
-        Modifier
-            .background(DayBorderDefault)
-            .fillMaxWidth()
-            .height(1.dp))
+    if (sortBarEnable)
+        SortByBar(orderUnit.value) {
+            orderUnit.value = it
+            Log.d("TEST", "order unit $it selected")
+        }
+
+    LineSpacer()
 
     val orderItemInfo = OrderItemInfo(
         true,
@@ -107,13 +107,12 @@ fun SortByBar(
 @Composable
 fun OrderListContent(
     orderItemList: List<OrderItemInfo>,
-    onItemClicked: (OrderItemInfo) -> Unit = {}
+    onItemClicked: (OrderItemInfo) -> Unit = {},
 ) = LazyColumn(
     modifier = Modifier
         .background(DayBackgroundSecondary)
         .fillMaxSize()
-        .padding(horizontal = UIConst.SPACE_S)
-    ,
+        .padding(horizontal = UIConst.SPACE_S),
     verticalArrangement = Arrangement.spacedBy(UIConst.SPACE_S)
 ) {
 
