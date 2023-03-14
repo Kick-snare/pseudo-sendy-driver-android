@@ -11,15 +11,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.uzun.pseudosendydriver.R
 import com.uzun.pseudosendydriver.presentation._const.UIConst
 import com.uzun.pseudosendydriver.presentation._enum.*
@@ -69,10 +73,21 @@ fun OrderSelectTab(pagerState: PagerState, onExpanded: () -> Unit) {
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = DayBackgroundPrimary,
+        indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+                modifier = Modifier
+                    .tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                    .clip(RoundedCornerShape(2.dp, 2.dp, 0.dp, 0.dp))
+                ,
+                color = DayBlueBase,
+                height = 3.dp
+            )
+        },
     ) {
         TabType.values().forEachIndexed { idx, tab ->
+            val selected = (pagerState.currentPage == idx)
             Tab(
-                selected = (pagerState.currentPage == idx),
+                selected = selected,
                 onClick = {
                     onExpanded()
                     coroutineScope.launch {
@@ -84,9 +99,10 @@ fun OrderSelectTab(pagerState: PagerState, onExpanded: () -> Unit) {
                     modifier = Modifier.padding(vertical = UIConst.SPACE_S),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (tab.iconId != 0) Image(
+                    if (tab.iconId != 0) Icon(
                         painterResource(id = tab.iconId),
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = if(selected) DayBlueBase else DayGrayscale400
                     )
                     Text(tab.korName)
                 }
