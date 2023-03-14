@@ -104,6 +104,10 @@ dependencies {
 
     // accompanist
     implementation 'com.google.accompanist:accompanist-flowlayout:0.29.2-rc'
+
+    // fused location
+    //noinspection GradleDependency
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 }
 
 kapt {
