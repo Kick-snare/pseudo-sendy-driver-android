@@ -3,14 +3,18 @@ package com.uzun.pseudosendydriver.presentation.ui
 import android.util.Log
 import android.view.Gravity
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.naver.maps.map.LocationSource
-import com.naver.maps.map.UiSettings
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.naver.maps.map.compose.*
+import com.uzun.pseudosendydriver.presentation._const.UIConst
 import com.uzun.pseudosendydriver.presentation._enum.FilterType.*
 import com.uzun.pseudosendydriver.presentation.model.OrderMarker
-import com.uzun.pseudosendydriver.presentation.ui.common.ModalBottomSheet
+import com.uzun.pseudosendydriver.presentation.ui.common.BottomSheet
 import com.uzun.pseudosendydriver.presentation.ui.orderlist.OrderListScreen
 import com.uzun.pseudosendydriver.presentation.ui.ordersearch.FilterBar
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
@@ -25,16 +29,29 @@ fun OrderSearchScreen() = Column(
         Log.d("TEST", "${it.korName} selected!")
     }
 
-    ModalBottomSheet(
-        sheetContent = { OrderListScreen(false) },
-        activityContentScope = { onHalfExpanded -> NaverMapContent(onHalfExpanded) }
+    BottomSheet(
+        sheetContent = { onExpanded ->
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Surface(
+                    shape = RoundedCornerShape(2.dp),
+                    color = DayGrayscale400,
+                    modifier = Modifier.padding(top = UIConst.SPACE_S).size(32.dp, 4.dp)
+                ) {}
+                OrderListScreen(
+                    orderItemList = emptyList(),
+                    sortBarEnable =  false,
+                    onExpanded = onExpanded
+                )
+            }
+        },
+        content = { NaverMapContent() }
     )
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun NaverMapContent(
-    onHalfExpanded: () -> Unit,
+    onExpanded: () -> Unit = {},
     orderMarkerList: List<OrderMarker> = emptyList()
 ) {
     val mapProperties by remember {
@@ -48,7 +65,9 @@ fun NaverMapContent(
     }
 
     NaverMap(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .zIndex(-1f)
+            .fillMaxSize(),
         properties = mapProperties,
         uiSettings = MapUiSettings(
             isTiltGesturesEnabled = false,
@@ -59,7 +78,7 @@ fun NaverMapContent(
             isLocationButtonEnabled = true,
             logoGravity = Gravity.TOP or Gravity.START
         ),
-        locationSource = rememberFusedLocationSource()
+        locationSource = rememberFusedLocationSource(),
     ) {
 
     }
