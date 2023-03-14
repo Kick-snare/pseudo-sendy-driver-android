@@ -19,6 +19,7 @@ object UIConst {
     val BUTTON_HEIGHT_LARGE = 30.dp
     val BUTTON_HEIGHT_NORMAL = 27.dp
     val BUTTON_HEIGHT_SMALL = 24.dp
+    val BUTTON_RADIUS_XL = 16.dp
     val BUTTON_RADIUS_LARGE = 12.dp
     val BUTTON_RADIUS_NORMAL = 8.dp
     val BUTTON_RADIUS_SMALL = 6.dp
