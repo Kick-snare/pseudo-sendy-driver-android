@@ -1,4 +1,4 @@
-package com.uzun.pseudosendydriver.presentation.ui
+package com.uzun.pseudosendydriver.presentation.ui.ordersearch
 
 import android.view.Gravity
 import androidx.compose.animation.*
@@ -24,8 +24,6 @@ import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import com.uzun.pseudosendydriver.presentation.ui.common.BottomSheet
 import com.uzun.pseudosendydriver.presentation.ui.common.OrderItem
 import com.uzun.pseudosendydriver.presentation.ui.orderlist.OrderListScreen
-import com.uzun.pseudosendydriver.presentation.ui.ordersearch.FilterBar
-import com.uzun.pseudosendydriver.presentation.ui.ordersearch.OrderSearchViewModel
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
 import com.uzun.pseudosendydriver.presentation.util.toCommaFormat
 import java.text.DecimalFormat
@@ -34,8 +32,12 @@ import java.text.DecimalFormat
 fun OrderSearchScreen(
     orderItemList: List<OrderItemInfo>,
     viewModel: OrderSearchViewModel = hiltViewModel(),
+    paddingValues: PaddingValues,
 ) = Column(
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(top = paddingValues.calculateTopPadding())
+        .padding(bottom = paddingValues.calculateBottomPadding()),
 ) {
     FilterBar(
         filterEnable = viewModel.filterMap,
@@ -49,7 +51,8 @@ fun OrderSearchScreen(
                 OrderListScreen(
                     orderItemList = orderItemList,
                     sortBarEnable = false,
-                    onExpanded = onExpanded
+                    onExpanded = onExpanded,
+                    paddingValues = paddingValues
                 )
             }
         },
@@ -131,7 +134,7 @@ fun NaverMapContent(
 
             orderItemList.forEach {
                 Marker(
-                    state = MarkerState(position = it.departAddr.latlng),
+                    state = MarkerState(position = it.departInfo.latlng),
                     icon = OverlayImage.fromResource(
                         if(it.loadingTime.getDayLeft() > 0) R.drawable.icon_price_tag_stop
                         else R.drawable.icon_price_tag_thunder

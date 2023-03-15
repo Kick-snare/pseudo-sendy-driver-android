@@ -9,7 +9,7 @@ import java.time.format.TextStyle
 import java.util.*
 import kotlin.time.DurationUnit
 
-data class SendyTime (
+data class SendyTime(
     var value: LocalDateTime = LocalDateTime.now(),
 ) {
     constructor(timeStamp: Long) : this() {
@@ -19,11 +19,26 @@ data class SendyTime (
         value = triggerTime
     }
 
-    override fun toString(): String {
-        return value.format(DateTimeFormatter.ofPattern("MM.dd(${value.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREA)}) - HH:mm"))
-    }
+    override fun toString(): String = value.format(
+        DateTimeFormatter.ofPattern(
+            "MM.dd(${
+                value.dayOfWeek.getDisplayName(
+                    TextStyle.SHORT,
+                    Locale.KOREA
+                )
+            }) - HH:mm"
+        )
+    )
 
-    fun getDayLeft() : Int {
+    fun toStringInDetail(): String = value.format(
+        DateTimeFormatter.ofPattern("yyyy.MM.dd (HH:mm)")
+    )
+
+    fun toStringInLoadId(): String = value.format(
+        DateTimeFormatter.ofPattern("yyyyMMdd-")
+    )
+
+    fun getDayLeft(): Int {
         return Period.between(value.toLocalDate(), LocalDate.now()).days
     }
 }

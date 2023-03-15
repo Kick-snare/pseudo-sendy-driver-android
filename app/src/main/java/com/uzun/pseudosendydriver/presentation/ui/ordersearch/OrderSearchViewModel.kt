@@ -1,6 +1,5 @@
 package com.uzun.pseudosendydriver.presentation.ui.ordersearch
 
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,11 +9,9 @@ import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.uzun.pseudosendydriver.presentation._enum.FilterType
-import com.uzun.pseudosendydriver.presentation.model.FilterSelection
 import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.logging.Filter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +47,7 @@ class OrderSearchViewModel @Inject constructor(
         viewModelScope.launch {
             cameraPositionState.animate(
                 update = CameraUpdate.scrollTo(
-                    orderItemInfo.departAddr.latlng
+                    orderItemInfo.departInfo.latlng
                 )
             )
         }

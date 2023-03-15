@@ -40,8 +40,13 @@ fun OrderListScreen(
     orderItemList: List<OrderItemInfo>,
     sortBarEnable: Boolean = true,
     onExpanded: () -> Unit = {},
+    moveToOrderDetail: (String) -> Unit = {},
+    paddingValues: PaddingValues,
 ) = Column(
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(top = paddingValues.calculateTopPadding())
+        .padding(bottom = paddingValues.calculateBottomPadding()),
 ) {
     val pagerState = rememberPagerState()
 
@@ -62,7 +67,10 @@ fun OrderListScreen(
         state = pagerState
     ) { page ->
         if (page == 0) OrderListContent(false) {}
-        else OrderListContent(orderItemList = orderItemList) {}
+        else OrderListContent(
+            orderItemList = orderItemList,
+            onItemClicked = moveToOrderDetail
+        )
     }
 }
 
@@ -156,7 +164,7 @@ fun SortByBar(
 fun OrderListContent(
     enable: Boolean = true,
     orderItemList: List<OrderItemInfo> = emptyList(),
-    onItemClicked: (OrderItemInfo) -> Unit = {},
+    onItemClicked: (String) -> Unit = {},
 ) = LazyColumn(
     modifier = Modifier
         .background(DayBackgroundSecondary)
@@ -168,7 +176,7 @@ fun OrderListContent(
 
     if (enable)
         items(orderItemList) { orderItemInfo ->
-            OrderItem(orderItemInfo = orderItemInfo) { onItemClicked(orderItemInfo) }
+            OrderItem(orderItemInfo = orderItemInfo) { onItemClicked(orderItemInfo.orderId) }
         }
     else item { PlaceHolderContent() }
 
