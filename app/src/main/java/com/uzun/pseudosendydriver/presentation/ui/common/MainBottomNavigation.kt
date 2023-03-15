@@ -26,7 +26,7 @@ fun MainBottomNavigation(
     navController: NavHostController,
 ) = BottomNavigation(
     backgroundColor = White,
-    elevation = 5.dp
+    elevation = 16.dp
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
