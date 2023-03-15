@@ -27,11 +27,13 @@ import com.uzun.pseudosendydriver.presentation._enum.VehicleType
 import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import com.uzun.pseudosendydriver.presentation.model.SendyTime
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
+import com.uzun.pseudosendydriver.presentation.util.toCommaFormat
 import java.text.DecimalFormat
 
 @Composable
 fun OrderItem(
     orderItemInfo: OrderItemInfo = OrderItemInfo(),
+    isMiniMode: Boolean = false,
     onClick: () -> Unit = {},
 ) = Surface(
     shape = RoundedCornerShape(16.dp),
@@ -46,16 +48,18 @@ fun OrderItem(
         verticalArrangement = Arrangement.spacedBy(UIConst.SPACE_M)
     ) {
         OrderItemTimeInfo(orderItemInfo.loadingTime)
-        OrderItemLocationInfo(orderItemInfo.departAddr, orderItemInfo.arriveAddr)
-        OrderItemTagList(
-            orderItemInfo.enable,
-            orderItemInfo.distance,
-            orderItemInfo.vehicleType,
-            orderItemInfo.vehicleOption,
-            orderItemInfo.timeOrderTag,
-            orderItemInfo.OrderTagList
-        )
-        OrderItemChargeInfo(orderItemInfo.enable, orderItemInfo.chargeCost)
+        OrderItemLocationInfo(orderItemInfo.departAddr.roadAddress, orderItemInfo.arriveAddr.roadAddress)
+        if(!isMiniMode) {
+            OrderItemTagList(
+                orderItemInfo.enable,
+                orderItemInfo.distance,
+                orderItemInfo.vehicleType,
+                orderItemInfo.vehicleOption,
+                orderItemInfo.timeOrderTag,
+                orderItemInfo.orderTagList
+            )
+            OrderItemChargeInfo(orderItemInfo.enable, orderItemInfo.chargeCost)
+        }
     }
 }
 
@@ -80,7 +84,7 @@ fun OrderItemTimeInfo(loadingTime: SendyTime) = Box {
         text = if(d_day==0) "D-Day" else if(d_day > 0) "D+$d_day" else "D$d_day",
         modifier = Modifier.align(Alignment.CenterEnd),
         style = PseudoSendyTheme.typography.Normal.copy(color =
-            if(d_day > 0) Color.Green else Color.Red
+            if(d_day > 0) Color.Red else Color.Green
         ),
     )
 }
@@ -109,7 +113,7 @@ fun OrderItemLocationInfo(
         )
     }
     Column(
-        modifier = Modifier.height(61.dp),
+        modifier = Modifier.defaultMinSize(minHeight = 61.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -169,7 +173,7 @@ fun OrderItemChargeInfo(
     )
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = DecimalFormat("#,###,###").format(ChargeCost) + "원",
+            text = ChargeCost.toCommaFormat() + "원",
             style = PseudoSendyTheme.typography.MediumBold.copy(color = White),
         )
         Spacer(modifier = Modifier.size(UIConst.SPACE_XXS))

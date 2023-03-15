@@ -2,6 +2,7 @@ package com.uzun.pseudosendydriver.presentation.ui.ordersearch
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -40,23 +41,29 @@ fun FilterBar(
             contentDescription = null
         )
         FilterType.values().forEach { filterType ->
-            filterEnable[filterType]?.let {
-                FilterCard(filterType.korName, it)
-            }
+            FilterCard(
+                filterType.korName,
+                filterEnable[filterType]!!,
+            ) { onFilterSelected(filterType) }
         }
     }
     LineSpacer()
 }
 
 @Composable
-fun FilterCard(title: String, selected: Boolean) = Surface(
+fun FilterCard(
+    title: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) = Surface(
     shape = RoundedCornerShape(UIConst.BUTTON_RADIUS_XL),
     contentColor = if (selected) White else DayGrayscale100,
     color = if (selected) DayBlueBase else Color.Transparent,
-    border = BorderStroke(1.dp, DayBorderDefault)
+    border = BorderStroke(1.dp, DayBorderDefault),
 ) {
     Row(
         modifier = Modifier
+            .clickable(onClick = onClick)
             .padding(horizontal = UIConst.SPACE_XS)
             .padding(vertical = 2.dp)
             .padding(UIConst.SPACE_XXS)

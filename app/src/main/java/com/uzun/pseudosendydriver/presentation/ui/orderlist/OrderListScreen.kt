@@ -77,8 +77,7 @@ fun OrderSelectTab(pagerState: PagerState, onExpanded: () -> Unit) {
             TabRowDefaults.Indicator(
                 modifier = Modifier
                     .tabIndicatorOffset(tabPositions[pagerState.currentPage])
-                    .clip(RoundedCornerShape(2.dp, 2.dp, 0.dp, 0.dp))
-                ,
+                    .clip(RoundedCornerShape(2.dp, 2.dp, 0.dp, 0.dp)),
                 color = DayBlueBase,
                 height = 3.dp
             )
@@ -102,7 +101,7 @@ fun OrderSelectTab(pagerState: PagerState, onExpanded: () -> Unit) {
                     if (tab.iconId != 0) Icon(
                         painterResource(id = tab.iconId),
                         contentDescription = null,
-                        tint = if(selected) DayBlueBase else DayGrayscale400
+                        tint = if (selected) DayBlueBase else DayGrayscale400
                     )
                     Text(tab.korName)
                 }
@@ -169,26 +168,28 @@ fun OrderListContent(
 
     if (enable)
         items(orderItemList) { orderItemInfo ->
-            OrderItem(orderItemInfo) { onItemClicked(orderItemInfo) }
+            OrderItem(orderItemInfo = orderItemInfo) { onItemClicked(orderItemInfo) }
         }
-    else
-        item {
-            Column(
-                modifier = Modifier.fillMaxSize().padding(top = UIConst.SPACE_XXL),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painterResource(id = R.drawable.img_empty_orderlist),
-                    contentDescription = null
-                )
-                Spacer(Modifier.size(UIConst.SPACE_M))
-                Text(
-                    text = "할당된 오더가\n없습니다.",
-                    style = PseudoSendyTheme.typography.XL.copy(color = DayGrayscale300),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+    else item { PlaceHolderContent() }
 
     item { Spacer(Modifier.size(UIConst.SPACE_S)) }
+}
+
+@Composable
+fun PlaceHolderContent() = Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(top = UIConst.SPACE_XXL),
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
+    Image(
+        painterResource(id = R.drawable.img_empty_orderlist),
+        contentDescription = null
+    )
+    Spacer(Modifier.size(UIConst.SPACE_M))
+    Text(
+        text = "할당된 오더가\n없습니다.",
+        style = PseudoSendyTheme.typography.XL.copy(color = DayGrayscale300),
+        textAlign = TextAlign.Center
+    )
 }
