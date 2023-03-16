@@ -28,7 +28,6 @@ import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import com.uzun.pseudosendydriver.presentation.model.SendyTime
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
 import com.uzun.pseudosendydriver.presentation.util.toCommaFormat
-import java.text.DecimalFormat
 
 @Composable
 fun OrderItem(
@@ -48,7 +47,7 @@ fun OrderItem(
         verticalArrangement = Arrangement.spacedBy(UIConst.SPACE_M)
     ) {
         OrderItemTimeInfo(orderItemInfo.loadingTime)
-        OrderItemLocationInfo(orderItemInfo.departAddr.roadAddress, orderItemInfo.arriveAddr.roadAddress)
+        OrderItemLocationInfo(orderItemInfo.departInfo.roadAddress, orderItemInfo.arriveInfo.roadAddress)
         if(!isMiniMode) {
             OrderItemTagList(
                 orderItemInfo.enable,

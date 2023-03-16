@@ -15,6 +15,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.uzun.pseudosendydriver.R
 import com.uzun.pseudosendydriver.presentation._enum.BottomRoute
 import com.uzun.pseudosendydriver.presentation.ui.theme.DayGrayscale100
 import com.uzun.pseudosendydriver.presentation.ui.theme.DayGrayscale400
@@ -63,4 +64,9 @@ fun MainBottomNavigation(
             unselectedContentColor = DayGrayscale400
         )
     }
+}
+
+enum class PseudoSendyDriverRoute(val route: String) {
+    BOTTOM_ROOT("bottom-nav-root"),
+    ORDER_DETAIL("order-item-detail"),
 }

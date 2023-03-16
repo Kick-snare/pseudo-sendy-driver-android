@@ -1,4 +1,4 @@
-package com.uzun.pseudosendydriver.presentation.ui
+package com.uzun.pseudosendydriver.presentation.ui.ordersearch
 
 import android.view.Gravity
 import androidx.compose.animation.*
@@ -24,8 +24,6 @@ import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import com.uzun.pseudosendydriver.presentation.ui.common.BottomSheet
 import com.uzun.pseudosendydriver.presentation.ui.common.OrderItem
 import com.uzun.pseudosendydriver.presentation.ui.orderlist.OrderListScreen
-import com.uzun.pseudosendydriver.presentation.ui.ordersearch.FilterBar
-import com.uzun.pseudosendydriver.presentation.ui.ordersearch.OrderSearchViewModel
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
 import com.uzun.pseudosendydriver.presentation.util.toCommaFormat
 import java.text.DecimalFormat
@@ -34,8 +32,13 @@ import java.text.DecimalFormat
 fun OrderSearchScreen(
     orderItemList: List<OrderItemInfo>,
     viewModel: OrderSearchViewModel = hiltViewModel(),
+    paddingValues: PaddingValues,
+    moveToOrderDetail: (String) -> Unit,
 ) = Column(
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(top = paddingValues.calculateTopPadding())
+        .padding(bottom = paddingValues.calculateBottomPadding()),
 ) {
     FilterBar(
         filterEnable = viewModel.filterMap,
@@ -47,9 +50,12 @@ fun OrderSearchScreen(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 handleBar()
                 OrderListScreen(
+                    isInSheet = true,
                     orderItemList = orderItemList,
                     sortBarEnable = false,
-                    onExpanded = onExpanded
+                    onExpanded = onExpanded,
+                    paddingValues = paddingValues,
+                    moveToOrderDetail = moveToOrderDetail
                 )
             }
         },
@@ -60,7 +66,8 @@ fun OrderSearchScreen(
                 miniOrderBoxVisibility = viewModel.miniOrderBoxVisibility,
                 cameraPositionState = viewModel.cameraPositionState,
                 onMarkerClicked = viewModel::onMarkerClicked,
-                onMapClicked = viewModel::onMapClicked
+                onMapClicked = viewModel::onMapClicked,
+                moveToOrderDetail = moveToOrderDetail
             )
         }
     )
@@ -81,10 +88,10 @@ fun NaverMapContent(
     orderItemList: List<OrderItemInfo>,
     selectedOrder: OrderItemInfo? = null,
     miniOrderBoxVisibility: Boolean = false,
-    onSelectedOrderClicked: () -> Unit = {},
     cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     onMarkerClicked: (OrderItemInfo) -> Unit = {},
     onMapClicked: () -> Unit = {},
+    moveToOrderDetail: (String) -> Unit,
 ) {
     Box {
         Box(
@@ -95,13 +102,13 @@ fun NaverMapContent(
         ) {
             AnimatedVisibility(
                 visible = miniOrderBoxVisibility,
-                enter = slideInVertically { it/2 } + fadeIn(),
-                exit = slideOutVertically { it/2 } + fadeOut()
+                enter = slideInVertically { it / 2 } + fadeIn(),
+                exit = slideOutVertically { it / 2 } + fadeOut()
             ) {
                 OrderItem(
                     orderItemInfo = selectedOrder!!,
                     isMiniMode = true,
-                    onClick = onSelectedOrderClicked
+                    onClick = { moveToOrderDetail(selectedOrder.orderId) }
                 )
             }
         }
@@ -131,9 +138,9 @@ fun NaverMapContent(
 
             orderItemList.forEach {
                 Marker(
-                    state = MarkerState(position = it.departAddr.latlng),
+                    state = MarkerState(position = it.departInfo.latlng),
                     icon = OverlayImage.fromResource(
-                        if(it.loadingTime.getDayLeft() > 0) R.drawable.icon_price_tag_stop
+                        if (it.loadingTime.getDayLeft() > 0) R.drawable.icon_price_tag_stop
                         else R.drawable.icon_price_tag_thunder
                     ),
                     width = 102.dp,
@@ -151,19 +158,5 @@ fun NaverMapContent(
             }
         }
     }
-}
-
-@Composable
-fun OrderMarker(
-    orderItemInfo: OrderItemInfo,
-) = Row(verticalAlignment = Alignment.CenterVertically) {
-    Icon(
-        painterResource(id = R.drawable.badge_order_status_received),
-        contentDescription = null
-    )
-    Text(
-        text = "${DecimalFormat("#,###,###").format(orderItemInfo.chargeCost)}W",
-        style = PseudoSendyTheme.typography.Normal.copy(color = Black)
-    )
 }
 
