@@ -1,4 +1,4 @@
-package com.uzun.pseudosendy.data.remote.dto
+package com.uzun.pseudosendydriver.data.remote.dto
 
 data class Route(
     val traoptimal: List<RouteUnitEnt>

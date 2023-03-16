@@ -60,6 +60,7 @@ fun DriverMainScreen(
             composable(route = BottomRoute.ORDER_SEARCH.route) { navBackStackEntry ->
                 OrderSearchScreen(
                     vm.orderList,
+                    moveToOrderDetail = { appState.navigateToOrderDetail(it, navBackStackEntry) },
                     paddingValues = paddingValues
                 )
             }
@@ -81,9 +82,13 @@ fun DriverMainScreen(
                 popExitTransition = { slideOutVertically { it / 2 } + fadeOut() },
             ) {
                 val orderId = requireNotNull(it.arguments).getString("orderId")
+                val selectedOrder = vm.orderMap[orderId]!!
+
                 OrderDetailScreen(
                     popUP = appState::upPress,
-                    orderInfo = vm.orderMap[orderId]!!
+                    orderInfo = selectedOrder,
+                    toFullSizeMap = {},
+                    snackBarState = appState.scaffoldState.snackbarHostState
                 )
             }
         }

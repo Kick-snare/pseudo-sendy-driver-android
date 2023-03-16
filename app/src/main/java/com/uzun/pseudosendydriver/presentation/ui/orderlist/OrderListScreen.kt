@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrderListScreen(
+    isInSheet: Boolean = false,
     orderItemList: List<OrderItemInfo>,
     sortBarEnable: Boolean = true,
     onExpanded: () -> Unit = {},
@@ -46,7 +47,7 @@ fun OrderListScreen(
     modifier = Modifier
         .fillMaxSize()
         .padding(top = paddingValues.calculateTopPadding())
-        .padding(bottom = paddingValues.calculateBottomPadding()),
+        .padding(bottom = if(isInSheet) 0.dp else paddingValues.calculateBottomPadding()),
 ) {
     val pagerState = rememberPagerState()
 

@@ -1,6 +1,8 @@
-package com.uzun.pseudosendy.data.remote.dto
+package com.uzun.pseudosendydriver.data.remote.dto
 
 data class ResponsePositionFormat(
-    val location: List<Double>,
-    val dir: Int,
-)
+    val location: List<Double> = emptyList(),
+) {
+    fun getLongitude() = if(location.isNotEmpty()) location.first() else 0.0
+    fun getLatitude() = if(location.isNotEmpty()) location[1] else 0.0
+}

@@ -1,6 +1,10 @@
-package com.uzun.pseudosendy.data.remote.dto
+package com.uzun.pseudosendydriver.data.remote.dto
+
+import com.naver.maps.geometry.LatLng
 
 data class RouteUnitEnt(
-    val summary: Summary,
-    val path: List<List<Double>>,
-)
+    val summary: Summary = Summary(),
+    val path: List<List<Double>> = emptyList(),
+) {
+    fun getPathList() : List<LatLng> = path.map { LatLng(it[1], it[0]) }
+}

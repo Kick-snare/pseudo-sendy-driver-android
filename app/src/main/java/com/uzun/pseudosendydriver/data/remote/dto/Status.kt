@@ -1,7 +1,7 @@
 package com.uzun.pseudosendydriver.data.remote.dto
 
-data class DrivingRoute(
+data class Status(
     val code: Int,
     val message: String,
-    val route: Route
+    val name: String
 )

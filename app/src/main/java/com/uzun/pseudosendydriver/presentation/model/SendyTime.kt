@@ -38,6 +38,15 @@ data class SendyTime(
         DateTimeFormatter.ofPattern("yyyyMMdd-")
     )
 
+    fun toStringOfPattern(pattern: String): String = value.format(
+        DateTimeFormatter.ofPattern(pattern)
+    )
+
+    fun getKoreanDay(): String = value.dayOfWeek.getDisplayName(
+        TextStyle.SHORT,
+        Locale.KOREA
+    )
+
     fun getDayLeft(): Int {
         return Period.between(value.toLocalDate(), LocalDate.now()).days
     }
