@@ -88,7 +88,6 @@ fun DriverMainScreen(
                 OrderDetailScreen(
                     popUP = appState::upPress,
                     orderInfo = selectedOrder,
-                    toFullSizeMap = {},
                     snackBarState = appState.scaffoldState.snackbarHostState
                 )
             }
