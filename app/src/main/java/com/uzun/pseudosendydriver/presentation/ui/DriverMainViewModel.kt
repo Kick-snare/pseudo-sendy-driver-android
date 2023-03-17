@@ -6,10 +6,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.naver.maps.geometry.LatLng
-import com.uzun.pseudosendydriver.presentation._enum.OrderTag
-import com.uzun.pseudosendydriver.presentation._enum.TimeOrderTag
-import com.uzun.pseudosendydriver.presentation._enum.VehicleOption
-import com.uzun.pseudosendydriver.presentation._enum.VehicleType
+import com.uzun.pseudosendydriver.presentation._enum.*
 import com.uzun.pseudosendydriver.presentation.model.LocationInfo
 import com.uzun.pseudosendydriver.presentation.model.OrderFullData
 import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
@@ -21,9 +18,7 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class DriverMainViewModel @Inject constructor(
-
-) : ViewModel() {
+class DriverMainViewModel @Inject constructor() : ViewModel() {
     var orderMap = mutableStateMapOf<String, OrderFullData>()
     var orderList = mutableListOf<OrderItemInfo>()
 
@@ -52,7 +47,7 @@ class DriverMainViewModel @Inject constructor(
             SendyTime(LocalDateTime.now().plusDays(2).plusHours(5).plusMinutes(13)),
             LocationInfo("부산광역시 연제구 연산동 862", "부산광역시 연제로 21", LatLng(35.176391, 129.076994)),
             LocationInfo("부산광역시 남구 유엔로", "부산광역시 남구 유엔로", LatLng(35.13009, 129.08964)),
-            87,
+            201,
             131_000,
             VehicleType.TRUCK_1T,
             VehicleOption.CARGO,
@@ -73,6 +68,7 @@ class DriverMainViewModel @Inject constructor(
                 LatLng(35.147810, 129.110135)
             ),
             chargeCost = 82_300,
+            distance = 33,
             orderTagList = listOf(OrderTag.UNLOAD_TOMORROW, OrderTag.TIME_IMPORTANT),
         )
 
@@ -92,6 +88,13 @@ class DriverMainViewModel @Inject constructor(
         orderMap[order4.orderId] = order4
 
         orderList = orderMap.toList().map { it.second.toOrderItemInfo() }.toMutableStateList()
+    }
+
+    fun sortBy(orderUnit : OrderUnit) {
+        when(orderUnit) {
+            OrderUnit.ByTime -> orderList.sortedByDescending { it.loadingTime.value }
+            OrderUnit.ByDistance -> orderList.sortBy { it.distance }
+        }
     }
 
 }

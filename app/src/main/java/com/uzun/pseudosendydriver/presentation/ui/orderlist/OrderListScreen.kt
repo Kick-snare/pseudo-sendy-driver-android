@@ -7,7 +7,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -33,6 +35,7 @@ import com.uzun.pseudosendydriver.presentation.ui.common.OrderItem
 import com.uzun.pseudosendydriver.presentation.ui.common.OrderUnitDropDownSelector
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
 import kotlinx.coroutines.launch
+import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -43,13 +46,16 @@ fun OrderListScreen(
     onExpanded: () -> Unit = {},
     moveToOrderDetail: (String) -> Unit = {},
     paddingValues: PaddingValues,
+    sortBy: (OrderUnit) -> Unit = {},
 ) = Column(
     modifier = Modifier
         .fillMaxSize()
         .padding(top = paddingValues.calculateTopPadding())
-        .padding(bottom = if(isInSheet) 0.dp else paddingValues.calculateBottomPadding()),
+        .padding(bottom = if (isInSheet) 0.dp else paddingValues.calculateBottomPadding()),
 ) {
     val pagerState = rememberPagerState()
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     OrderSelectTab(pagerState, onExpanded)
 
@@ -57,7 +63,8 @@ fun OrderListScreen(
     if (sortBarEnable) {
         SortByBar(orderUnit.value) {
             orderUnit.value = it
-            Log.d("TEST", "order unit $it selected")
+            sortBy(it)
+            scope.launch { listState.animateScrollToItem(index = 0) }
         }
         LineSpacer()
     }
@@ -69,6 +76,7 @@ fun OrderListScreen(
     ) { page ->
         if (page == 0) OrderListContent(false) {}
         else OrderListContent(
+            listState = listState,
             orderItemList = orderItemList,
             onItemClicked = moveToOrderDetail
         )
@@ -164,9 +172,11 @@ fun SortByBar(
 @Composable
 fun OrderListContent(
     enable: Boolean = true,
+    listState: LazyListState = rememberLazyListState(),
     orderItemList: List<OrderItemInfo> = emptyList(),
     onItemClicked: (String) -> Unit = {},
 ) = LazyColumn(
+    state = listState,
     modifier = Modifier
         .background(DayBackgroundSecondary)
         .fillMaxSize()
