@@ -18,5 +18,6 @@ interface MapsApi {
     suspend fun getDrivingRoute(
         @Query("start") start: String,
         @Query("goal") goal: String,
+        @Query("waypoints") waypoints: String,
     ): Response<DrivingRoute>
 }

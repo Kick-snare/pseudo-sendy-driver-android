@@ -104,7 +104,10 @@ fun LazyListScope.drivingPathRow(
                 icon = OverlayImage.fromResource(R.drawable.marker_unload)
             )
             route.summary.getWaypointLatLngs().forEach {
-                Marker(state = MarkerState(position = it))
+                Marker(
+                    state = MarkerState(position = it),
+                    icon = OverlayImage.fromResource(R.drawable.marker_waypoint)
+                )
             }
             if (route.path.isNotEmpty())
                 PathOverlay(

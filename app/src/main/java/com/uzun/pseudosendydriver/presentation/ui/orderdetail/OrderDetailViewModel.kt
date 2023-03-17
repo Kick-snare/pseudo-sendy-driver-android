@@ -34,11 +34,13 @@ class OrderDetailViewModel @Inject constructor(
 
     fun getDrivingRoute(
         start : LatLng,
-        goal : LatLng
+        goal : LatLng,
+        waypoints: List<LatLng> = emptyList()
     ) = viewModelScope.launch {
         mapsRepository.getDrivingRoute(
             LngLat(start.longitude, start.latitude),
-            LngLat(goal.longitude, goal.latitude)
+            LngLat(goal.longitude, goal.latitude),
+            waypoints.map { LngLat(it.longitude, it.latitude) }
         )
             .onFailure {
                 Log.e("OrderDetailViewModel", it.message ?: "")

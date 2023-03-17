@@ -6,19 +6,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.uzun.pseudosendydriver.presentation._const.UIConst
 import com.uzun.pseudosendydriver.presentation._enum.OrderTag
 import com.uzun.pseudosendydriver.presentation.model.OrderFullData
-import com.uzun.pseudosendydriver.presentation.ui.common.LineSpacer
 import com.uzun.pseudosendydriver.presentation.ui.orderdetail.OrderDetailViewModel.UiEvent
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
 import com.uzun.pseudosendydriver.presentation.util.toCommaFormat
@@ -40,7 +41,7 @@ fun OrderDetailScreen(
     LaunchedEffect(true) {
         val departLoc = orderInfo.departInfo.latlng
         val arriveLoc = orderInfo.arriveInfo.latlng
-        viewModel.getDrivingRoute(departLoc, arriveLoc)
+        viewModel.getDrivingRoute(departLoc, arriveLoc, orderInfo.wayPointList.map { it.latlng })
         viewModel.getMinifiedAddress(departLoc, false)
         viewModel.getMinifiedAddress(arriveLoc)
 
@@ -85,7 +86,7 @@ fun OrderDetailScreen(
             )
             tableRow(
                 title = "이동거리",
-                text = (viewModel.route.summary.distance / 10.0).toString() + "km",
+                text = (viewModel.route.summary.distance / 1000.0).toCommaFormat() + "km",
             )
             tableRow(
                 title = "차종",
@@ -167,7 +168,8 @@ fun LazyListScope.tableRow(
     Row(
         Modifier
             .background(DayBackgroundSecondary)
-            .fillMaxWidth()) {
+            .fillMaxWidth()
+    ) {
         Text(
             text = title,
             style = PseudoSendyTheme.typography.Normal.copy(color = DayGrayscale300),
