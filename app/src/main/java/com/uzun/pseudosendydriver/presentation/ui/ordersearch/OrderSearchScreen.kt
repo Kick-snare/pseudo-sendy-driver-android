@@ -4,13 +4,10 @@ import android.view.Gravity
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -26,7 +23,6 @@ import com.uzun.pseudosendydriver.presentation.ui.common.OrderItem
 import com.uzun.pseudosendydriver.presentation.ui.orderlist.OrderListScreen
 import com.uzun.pseudosendydriver.presentation.ui.theme.*
 import com.uzun.pseudosendydriver.presentation.util.toCommaFormat
-import java.text.DecimalFormat
 
 @Composable
 fun OrderSearchScreen(
@@ -54,8 +50,8 @@ fun OrderSearchScreen(
                     orderItemList = orderItemList,
                     sortBarEnable = false,
                     onExpanded = onExpanded,
+                    moveToOrderDetail = moveToOrderDetail,
                     paddingValues = paddingValues,
-                    moveToOrderDetail = moveToOrderDetail
                 )
             }
         },

@@ -30,9 +30,17 @@ class MapsRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getDrivingRoute(start: LngLat, goal: LngLat): Result<RouteUnitEnt> {
+    override suspend fun getDrivingRoute(
+        start: LngLat,
+        goal: LngLat,
+        waypoints: List<LngLat>
+    ): Result<RouteUnitEnt> {
         return runCatching {
-            api.getDrivingRoute(start.toCoordString(), goal.toCoordString()).body()!!
+            api.getDrivingRoute(
+                start.toCoordString(),
+                goal.toCoordString(),
+                waypoints.map { it.toCoordString() }.joinToString(separator = "|")
+            ).body()!!
         }
             .map { res ->
                 if (res.code == 0) res.route.traoptimal.first()

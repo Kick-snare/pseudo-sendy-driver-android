@@ -54,7 +54,8 @@ fun DriverMainScreen(
                 OrderListScreen(
                     orderItemList = vm.orderList,
                     moveToOrderDetail = { appState.navigateToOrderDetail(it, navBackStackEntry) },
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
+                    sortBy = vm::sortBy
                 )
             }
             composable(route = BottomRoute.ORDER_SEARCH.route) { navBackStackEntry ->

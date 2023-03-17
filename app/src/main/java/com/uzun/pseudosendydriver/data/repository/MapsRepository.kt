@@ -5,5 +5,5 @@ import com.uzun.pseudosendydriver.data.remote.dto.RouteUnitEnt
 
 interface MapsRepository {
     suspend fun getMinifiedAddress(lnglat: LngLat) : Result<String>
-    suspend fun getDrivingRoute(start: LngLat, goal: LngLat) : Result<RouteUnitEnt>
+    suspend fun getDrivingRoute(start: LngLat, goal: LngLat, waypoints: List<LngLat>) : Result<RouteUnitEnt>
 }

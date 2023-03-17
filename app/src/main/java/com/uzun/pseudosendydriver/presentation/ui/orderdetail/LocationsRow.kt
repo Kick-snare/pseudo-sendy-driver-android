@@ -43,7 +43,6 @@ fun LazyListScope.locationsRow(
 
             Column {
                 PointRow(type = LocationType.LOADING, location = depart)
-                PointRow(type = LocationType.WAYPOINT, location = depart)
                 waypoints.forEach {
                     PointRow(type = LocationType.WAYPOINT, location = it)
                 }
