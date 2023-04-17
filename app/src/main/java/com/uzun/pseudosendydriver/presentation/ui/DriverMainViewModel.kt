@@ -1,8 +1,6 @@
 package com.uzun.pseudosendydriver.presentation.ui
 
-import android.graphics.Bitmap
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.naver.maps.geometry.LatLng
@@ -12,8 +10,6 @@ import com.uzun.pseudosendydriver.presentation.model.OrderFullData
 import com.uzun.pseudosendydriver.presentation.model.OrderItemInfo
 import com.uzun.pseudosendydriver.presentation.model.SendyTime
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -28,7 +24,11 @@ class DriverMainViewModel @Inject constructor() : ViewModel() {
             true,
             SendyTime(LocalDateTime.now().plusDays(3)),
             LocationInfo("부산광역시 부산진구 서면로 39", "부산광역시 부산진구 서면로 39", LatLng(35.15409, 129.05797)),
-            LocationInfo("부산 사하구 장림동 1087-2", "부산광역시 사하구 다대로1066번길", LatLng(35.07749993910741, 128.9520781208145)),
+            LocationInfo(
+                "부산 사하구 장림동 1087-2",
+                "부산광역시 사하구 다대로1066번길",
+                LatLng(35.07749993910741, 128.9520781208145)
+            ),
             101,
             215_000,
             VehicleType.TRUCK_1T,
@@ -36,8 +36,16 @@ class DriverMainViewModel @Inject constructor() : ViewModel() {
             TimeOrderTag.DAWN,
             listOf(OrderTag.CAUTION, OrderTag.RIDE_WITH, OrderTag.TIME_IMPORTANT),
             wayPointList = listOf(
-                LocationInfo("부산 부산진구 가야동 467","부산광역시 부산진구 엄광로 176",LatLng(35.143619, 129.034922)),
-                LocationInfo("부산 사하구 하단동 840","부산광역시 사하구 낙동대로550번길 37",LatLng(35.11557041035922, 128.96797600783964))
+                LocationInfo(
+                    "부산 부산진구 가야동 467",
+                    "부산광역시 부산진구 엄광로 176",
+                    LatLng(35.143619, 129.034922)
+                ),
+                LocationInfo(
+                    "부산 사하구 하단동 840",
+                    "부산광역시 사하구 낙동대로550번길 37",
+                    LatLng(35.11557041035922, 128.96797600783964)
+                )
             )
         )
 
@@ -54,7 +62,11 @@ class DriverMainViewModel @Inject constructor() : ViewModel() {
             TimeOrderTag.DAWN,
             listOf(OrderTag.URGE_ALLOCATION, OrderTag.UNLOAD_TOMORROW),
             wayPointList = listOf(
-                LocationInfo("부산 부산진구 가야동 467","부산광역시 수영구 호암로30번길 10",LatLng(35.15701587061513, 129.11007811643026)),
+                LocationInfo(
+                    "부산 부산진구 가야동 467",
+                    "부산광역시 수영구 호암로30번길 10",
+                    LatLng(35.15701587061513, 129.11007811643026)
+                ),
             )
         )
 
@@ -90,8 +102,8 @@ class DriverMainViewModel @Inject constructor() : ViewModel() {
         orderList = orderMap.toList().map { it.second.toOrderItemInfo() }.toMutableStateList()
     }
 
-    fun sortBy(orderUnit : OrderUnit) {
-        when(orderUnit) {
+    fun sortBy(orderUnit: OrderUnit) {
+        when (orderUnit) {
             OrderUnit.ByTime -> orderList.sortedByDescending { it.loadingTime.value }
             OrderUnit.ByDistance -> orderList.sortBy { it.distance }
         }
